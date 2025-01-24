@@ -51,7 +51,7 @@ export default function Footer() {
 		},
 	];
 	return (
-		<footer className="bg-gray-600 text-white pt-8">
+		<footer className="bg-gray-600 text-white p-8">
 			<div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 my-4">
 				<div>
 					<h4 className="font-bold mb-4">Quick Links</h4>

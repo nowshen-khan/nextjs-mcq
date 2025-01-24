@@ -138,60 +138,51 @@ export default function Navbar() {
 								</Link>
 							</li>
 						))}
-						<input
-							type="text"
-							placeholder="Search..."
-							className="px-4 py-1 rounded-md"
-						/>
 						{session ? (
 							<div>
 								<p>Welcome, {session.user.name}</p>
 								<button onClick={() => signOut()}>Sign Out</button>
 							</div>
 						) : (
-							<div className="flex justify-center items-center bg-gray-800">
-								{/* Icon */}
-								<div
-									className="relative"
-									onMouseEnter={() => setIsHovered(true)} // Show on hover
-									onMouseLeave={() => setIsHovered(false)} // Hide when hover ends
-								>
-									<button className="bg-gray-800 text-white px-4 py-2 rounded-full">
+							<Menu as="div" className="relative inline-block text-left">
+								<div>
+									<MenuButton
+										className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50"
+										onMouseEnter={() => setIsHovered(true)}
+										onMouseLeave={() => setIsHovered(false)}
+									>
 										Login
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											className="h-5 w-5"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-										>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												strokeWidth={2}
-												d="M19 9l-7 7-7-7"
-											/>
-										</svg>
-									</button>
-									{/* Dropdown List */}
-									{isHovered && (
-										<div className="absolute top-12 left-0 bg-white shadow-lg rounded-lg p-4">
+										<ChevronDownIcon
+											aria-hidden="true"
+											className="-mr-1 size-5 text-gray-400"
+										/>
+									</MenuButton>
+								</div>
+
+								<MenuItems
+									transition
+									className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+								>
+									<div className="py-1">
+										<MenuItem>
 											<button
-												className="bg-blue-600 text-white py-2 px-4 rounded-lg w-full mb-2 hover:bg-blue-500"
+												className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden "
 												onClick={() => signIn("google")}
 											>
 												Google
 											</button>
+										</MenuItem>
+										<MenuItem>
 											<button
-												className="bg-green-600 text-white py-2 px-4 rounded-lg w-full hover:bg-green-500"
+												className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
 												onClick={() => signIn("facebook")}
 											>
 												Facebook
 											</button>
-										</div>
-									)}
-								</div>
-							</div>
+										</MenuItem>
+									</div>
+								</MenuItems>
+							</Menu>
 						)}
 					</ul>
 				</div>
