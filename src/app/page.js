@@ -1,5 +1,6 @@
 import SearchComponent from "@/components/SearchComponent";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
 	return (
@@ -12,7 +13,7 @@ export default function Home() {
 				}}
 			>
 				<div
-					className="bg-black bg-opacity-50 p-6 transition duration-300 ease-in-out transform hover:scale-105
+					className="bg-black bg-opacity-50 p-6
 "
 				>
 					<h2 className="text-4xl font-bold mb-4">Welcome to Learnwish</h2>
@@ -23,10 +24,11 @@ export default function Home() {
 						className="bg-yellow-400 text-blue-900 px-6 py-2 rounded hover:bg-yellow-300 transition duration-300 ease-in-out transform hover:scale-105
 "
 					>
-						Get Started
+						<Link href="/login">Get Started</Link>
 					</button>
 				</div>
-				<section className="bg-transparent py-8">
+				<br className="m-2" />
+				<section className=" py-8 bg-black bg-opacity-50">
 					<div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
 						<div>
 							<h4 className="text-3xl font-bold text-blue-600">50,000+</h4>
@@ -97,13 +99,13 @@ export default function Home() {
 
 			{/* call to action */}
 			<section className="bg-blue-500 text-white py-16 text-center">
-				<h3 className="text-3xl font-bold mb-6">Join Live MCQ Today!</h3>
+				<h3 className="text-3xl font-bold mb-6">Join LW MCQ Today!</h3>
 				<p className="mb-6">Sign up now and start your learning journey.</p>
 				<button
 					className="bg-yellow-400 text-blue-900 px-6 py-2 rounded hover:bg-yellow-300 transition duration-300 ease-in-out transform hover:scale-105
 "
 				>
-					Sign Up Now
+					<Link href={"/login"}>Sign Up Now</Link>
 				</button>
 			</section>
 		</div>

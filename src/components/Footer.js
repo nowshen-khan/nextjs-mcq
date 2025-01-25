@@ -70,7 +70,7 @@ export default function Footer() {
 				</div>
 				<div>
 					<h4 className="font-bold mb-4">Contact</h4>
-					<p>Email: support@livemcq.com</p>
+					<p>Email: support@learnwish.com</p>
 					<p>Phone: +880 1234 567890</p>
 				</div>
 				<div>

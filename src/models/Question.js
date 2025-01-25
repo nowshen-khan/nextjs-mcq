@@ -30,6 +30,7 @@ const questionSchema = new mongoose.Schema(
 							message: "Invalid image URL.",
 						},
 					},
+					isCorrect: { type: Boolean },
 				},
 			],
 			required: true,
@@ -38,28 +39,6 @@ const questionSchema = new mongoose.Schema(
 					return v && v.length > 0; // অন্তত একটি অপশন থাকতে হবে
 				},
 				message: "At least one option is required.",
-			},
-		},
-		answer: {
-			text: { type: String }, // উত্তরের টেক্সট অংশ
-			image: {
-				type: String,
-				default: "",
-				validate: {
-					validator: function (v) {
-						return !v || /^https?:\/\/.+\.(jpg|jpeg|png|gif|svg)$/i.test(v);
-					},
-					message: "Invalid image URL.",
-				},
-			},
-		},
-		validateAnswer: {
-			type: Boolean,
-			validate: {
-				validator: function () {
-					return this.answer.text || this.answer.image; // Text বা Image যেকোনো একটি থাকতে হবে
-				},
-				message: "Answer must have at least text or image.",
 			},
 		},
 
@@ -94,6 +73,7 @@ const questionSchema = new mongoose.Schema(
 			default: "medium",
 		},
 		tags: { type: [String], default: [] },
+		createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 	},
 	{ timestamps: true }
 );

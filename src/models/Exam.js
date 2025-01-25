@@ -7,7 +7,7 @@ const examSchema = new mongoose.Schema({
 		required: true,
 	},
 	exam_year: {
-		type: Number,
+		type: [Number],
 		required: true,
 		min: 2000,
 		max: new Date().getFullYear(),

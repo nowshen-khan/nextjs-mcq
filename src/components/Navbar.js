@@ -49,7 +49,9 @@ export default function Navbar() {
 	return (
 		<nav className="bg-blue-800 text-white">
 			<div className="container mx-auto flex items-center justify-between p-4">
-				<div className="text-lg font-bold">Learnwish</div>
+				<div className="text-lg font-bold">
+					<Link href={"/"}>LEARNWISH</Link>
+				</div>
 				<ul className="hidden md:flex space-x-6">
 					{links.map((link) => (
 						<li key={link.name}>
