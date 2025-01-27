@@ -2,15 +2,13 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+import User from "@/models/User";
+import dbConnect from "@/utils/dbConnect";
+
+dbConnect();
 
 export const authOptions = {
-	providers: [
-		GoogleProvider({
-			clientId: process.env.GOOGLE_CLIENT_ID,
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-		}),
-	],
-
 	providers: [
 		// Google Login
 		GoogleProvider({
@@ -30,21 +28,68 @@ export const authOptions = {
 				password: { label: "Password", type: "password" },
 			},
 			async authorize(credentials) {
-				// এখানে আপনার ব্যাকএন্ডে ইউজার ভেরিফিকেশন লজিক লিখুন
-				const user = { id: 1, name: "User", email: credentials.identifier };
-				if (user) return user;
-				return null;
+				const user = await User.findOne({ email: credentials.identifier });
+				if (!user) {
+					throw new Error("User not found");
+				}
+				const isValidPassword = await bcrypt.compare(
+					credentials.password,
+					user.password
+				);
+				if (!isValidPassword) {
+					throw new Error("Invalid credentials");
+				}
+				return user;
 			},
 		}),
 	],
-	pages: {
-		signIn: "/auth/signin",
-		signOut: "/auth/signout",
-		error: "/auth/error",
-		verifyRequest: "/auth/verify-request",
-		newAccount: "/auth/new-account",
+	callbacks: {
+		async signIn({ user, account, profile }) {
+			if (account.provider === "google") {
+				const existingUser = await User.findOne({ email: profile.email });
+				if (!existingUser) {
+					await User.create({
+						googleId: profile.sub,
+						name: profile.name,
+						email: profile.email,
+						image: profile.picture,
+						role: null,
+					});
+				}
+			} else if (account.provider === "facebook") {
+				const existingUser = await User.findOne({ email: profile.email });
+				if (!existingUser) {
+					await User.create({
+						facebookId: profile.id,
+						name: profile.name,
+						email: profile.email || "No Email",
+						role: null,
+					});
+				}
+			}
+			return true;
+		},
+		async redirect({ url, baseUrl }) {
+			// const dbUser = await User.findOne({ email: url.user?.email });
+			// if (dbUser && !dbUser.role) {
+			// 	return `${baseUrl}/role-setup`;
+			// }
+			return `${baseUrl}/role-setup`;
+		},
+		async session({ session, token, user }) {
+			const dbUser = await User.findOne({ email: session.user.email });
+			if (dbUser) {
+				session.user.id = dbUser._id.toString();
+				session.user.role = dbUser.role;
+			}
+
+			return session;
+		},
 	},
-	secret: process.env.NEXTAUTH_SECRET, // Add a strong secret in your .env.local};
+	session: {
+		strategy: "jwt",
+	},
+	secret: process.env.NEXTAUTH_SECRET,
 };
 const handler = NextAuth(authOptions);
 

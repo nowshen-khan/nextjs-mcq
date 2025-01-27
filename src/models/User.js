@@ -4,13 +4,16 @@ const userSchema = new mongoose.Schema(
 	{
 		name: { type: String, required: true },
 		email: { type: String, required: true, unique: true },
-		password: { type: String, required: true },
+		password: { type: String },
+		image: { type: String },
+		googleId: { type: String },
+		facebookId: { type: String },
 		role: {
 			type: String,
-			enum: ["student", "admin", "instructor"],
-			required: true,
+			enum: ["student", "admin", "teacher"],
+			default: null,
 		},
-		examsTaken: [{ type: mongoose.Schema.Types.ObjectId, ref: "ExamResult" }], // স্টুডেন্টদের জন্য
+		examsTaken: [{ type: mongoose.Schema.Types.ObjectId, ref: "ExamResult" }],
 	},
 	{ timestamps: true }
 );
